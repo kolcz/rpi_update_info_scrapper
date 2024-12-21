@@ -5,7 +5,7 @@ import os.path
 
 if __name__ == "__main__":
 
-    url = "https://downloads.raspberrypi.org/raspios_armhf/release_notes.txt"
+    url = "https://downloads.raspberrypi.com/raspios_lite_armhf/release_notes.txt"
     p = "last_date.txt"
 
     response_code = 0
