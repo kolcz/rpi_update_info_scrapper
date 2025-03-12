@@ -7,15 +7,21 @@ if __name__ == "__main__":
 
     url = "https://downloads.raspberrypi.com/raspios_lite_armhf/release_notes.txt"
     p = "last_date.txt"
+    max_responses = 5
 
+    response_counter = 0
     response_code = 0
-    while True:
+
+    while response_code != 200:
         try:
             response = requests.get(url)
+            response_code = response.status_code
         except:
             time.sleep(5)
-        else:
-            break
+            response_counter += 1
+
+        if response_counter > max_responses:
+            exit()
 
     content = response.text
     
