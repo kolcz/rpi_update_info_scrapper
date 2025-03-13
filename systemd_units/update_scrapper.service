@@ -1,0 +1,11 @@
+[Unit]
+Description= Service to run RPi Update Scrapper Script
+
+[Service]
+WorkingDirectory=/home/kolcziks/rpi_update_info_scrapper
+ExecStart=/home/kolcziks/rpi_update_info_scrapper/.venv/bin/python3 update_scrapper.py
+Restart=on-failure
+RestartSec=3600
+
+[Install]
+WantedBy=default.target
