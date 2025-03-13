@@ -1,13 +1,21 @@
 import requests
 import subprocess
+from dotenv import load_dotenv
 import time
-import os.path
+import os
+from smtplib import SMTP_SSL
+from email.message import EmailMessage
 
 if __name__ == "__main__":
 
     url = "https://downloads.raspberrypi.com/raspios_lite_armhf/release_notes.txt"
     p = "last_date.txt"
     max_responses = 5
+    load_dotenv()
+    smtp_host = os.environ.get("SMTP_HOST")
+    smtp_port = os.environ.get("SMTP_PORT")
+    smtp_username = os.environ.get("SMTP_USERNAME")
+    smtp_password = os.environ.get("SMTP_PASSWORD")
 
     response_counter = 0
     response_code = 0
@@ -36,11 +44,16 @@ if __name__ == "__main__":
             last_date = f.read().strip()
 
     if curr_date != last_date:
-        notification_text = "New update here!"
         with open(p, "w") as f:
             f.write(curr_date)
-    else:
-        notification_text = "No updates yet."
 
-    cmd = ("powershell.exe", "-File", "./update_notifier.ps1", f"{notification_text}")
-    p = subprocess.run(cmd)
+        with SMTP_SSL(smtp_host, smtp_port) as smtp_client:
+            smtp_client.login(smtp_username, smtp_password)
+
+            msg  = EmailMessage()
+            msg.set_content("New update here!")
+            msg['Subject'] = "RPi update scrapper message"
+            msg['From'] = smtp_username
+            msg['To'] = smtp_username
+
+            smtp_client.send_message(msg)
