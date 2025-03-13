@@ -1,1 +1,4 @@
-*.txt
+*last_date.txt
+.venv
+.env
+*__pycache__/
