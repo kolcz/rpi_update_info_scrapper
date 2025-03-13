@@ -12,7 +12,8 @@ if __name__ == "__main__":
     p = "last_date.txt"
     max_responses = 5
     load_dotenv()
-    smtp_host = os.environ.get("SMTP_HOST")
+    smtp_domain = os.environ.get("SMTP_DOMAIN")
+    smtp_host = "smtp." + smtp_domain
     smtp_port = os.environ.get("SMTP_PORT")
     smtp_username = os.environ.get("SMTP_USERNAME")
     smtp_password = os.environ.get("SMTP_PASSWORD")
@@ -51,9 +52,10 @@ if __name__ == "__main__":
             smtp_client.login(smtp_username, smtp_password)
 
             msg  = EmailMessage()
-            msg.set_content("New update here!")
+            msg.set_content(f"New update on {curr_date}!")
             msg['Subject'] = "RPi update scrapper message"
-            msg['From'] = smtp_username
-            msg['To'] = smtp_username
+            email_address = smtp_username + "@" + smtp_domain
+            msg['From'] = email_address
+            msg['To'] = email_address
 
             smtp_client.send_message(msg)
