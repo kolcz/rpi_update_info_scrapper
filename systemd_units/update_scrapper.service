@@ -1,5 +1,7 @@
 [Unit]
 Description= Service to run RPi Update Scrapper Script
+StartLimitIntervalSec=11h
+StartLimitBurst=10
 
 [Service]
 WorkingDirectory=/home/kolcziks/rpi_update_info_scrapper
